@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35919.96 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GorillaCustomSkin", "GorillaCustomSkin\GorillaCustomSkin.csproj", "{69862034-A637-4BCE-A5DB-7A9D5F6098F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GorillaCustomSkin-Editor", "GorillaCustomSkin-Editor\GorillaCustomSkin-Editor.csproj", "{80B6E502-8CC9-4F4C-A533-C6AD1262CDDE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{69862034-A637-4BCE-A5DB-7A9D5F6098F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69862034-A637-4BCE-A5DB-7A9D5F6098F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69862034-A637-4BCE-A5DB-7A9D5F6098F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69862034-A637-4BCE-A5DB-7A9D5F6098F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80B6E502-8CC9-4F4C-A533-C6AD1262CDDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80B6E502-8CC9-4F4C-A533-C6AD1262CDDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80B6E502-8CC9-4F4C-A533-C6AD1262CDDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80B6E502-8CC9-4F4C-A533-C6AD1262CDDE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B2868CF1-0E74-42FD-9F31-C1161ECA9D96}
+	EndGlobalSection
+EndGlobal
