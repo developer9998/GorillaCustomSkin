@@ -8,6 +8,7 @@ using UnityEngine;
 
 namespace GorillaCustomSkin
 {
+    [BepInDependency("dev.gorillainfowatch")]
     [BepInPlugin(Constants.GUID, Constants.Name, Constants.Version)]
     public class Plugin : BaseUnityPlugin
     {
