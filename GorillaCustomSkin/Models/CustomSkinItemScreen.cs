@@ -14,28 +14,25 @@ namespace GorillaCustomSkin.Models
 
         internal static ISkinAsset Skin;
 
-        public override void OnScreenOpen()
+        public override ScreenContent GetContent()
         {
-            Build();
-        }
-
-        public void Build()
-        {
-            LineBuilder = new();
+            LineBuilder lines = new();
 
             if (Skin == null)
             {
-                ShowScreen(typeof(CustomSkinSelectionScreen));
-                return;
+                SetScreen<CustomSkinSelectionScreen>();
+                return lines;
             }
 
-            LineBuilder.AddLine($"Name: {Skin.Descriptor.Name}");
+            lines.AddLine($"Name: {Skin.Descriptor.Name}");
 
-            LineBuilder.AddLine($"Author: {Skin.Descriptor.Author}");
+            lines.AddLine($"Author: {Skin.Descriptor.Author}");
 
-            LineBuilder.AddLine($"Description: {(string.IsNullOrEmpty(Skin.Descriptor.Description) || string.IsNullOrWhiteSpace(Skin.Descriptor.Description) ? "<color=red>N/A</color>" : Skin.Descriptor.Description)}");
+            lines.AddLine($"Description: {(string.IsNullOrEmpty(Skin.Descriptor.Description) || string.IsNullOrWhiteSpace(Skin.Descriptor.Description) ? "<color=red>N/A</color>" : Skin.Descriptor.Description)}");
 
-            LineBuilder.AddLine($"{(Main.Instance.LocalRig.CustomSkin == Skin ? "Remove" : "Equip")} Skin:", new WidgetButton(WidgetButton.EButtonType.Switch, Main.Instance.LocalRig.CustomSkin == Skin, EquipSkin));
+            lines.AddLine($"{(Main.Instance.LocalRig.CustomSkin == Skin ? "Remove" : "Equip")} Skin:", new WidgetButton(WidgetButton.EButtonType.Switch, Main.Instance.LocalRig.CustomSkin == Skin, EquipSkin));
+
+            return lines;
         }
 
         public void EquipSkin(bool isButtonPressed, object[] args)
@@ -49,8 +46,7 @@ namespace GorillaCustomSkin.Models
                 Main.Instance.LocalRig.UnloadSkin();
             }
 
-            Build();
-            UpdateLines();
+            SetText();
         }
     }
 }

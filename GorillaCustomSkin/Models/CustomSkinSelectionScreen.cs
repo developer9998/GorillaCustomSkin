@@ -15,22 +15,19 @@ namespace GorillaCustomSkin.Models
 
         public override string Description => !Main.Instance.IsLoaded ? "GorillaCustomSkin is actively loading, please wait, then refresh" : $"{Main.Instance.Loader.Skins.Count} skins loaded by GorillaCustomSkin";
 
-        public override void OnScreenOpen()
+        public override ScreenContent GetContent()
         {
-            Build();
-        }
-
-        public void Build()
-        {
-            LineBuilder = new();
+            LineBuilder lines = new();
 
             if (Main.Instance.IsLoaded)
             {
                 foreach (var skin in Main.Instance.Loader.Skins)
                 {
-                    LineBuilder.AddLine(Path.GetFileName(skin.FilePath), new WidgetButton(ViewSkin, skin));
+                    lines.AddLine(Path.GetFileName(skin.FilePath), new WidgetButton(ViewSkin, skin));
                 }
             }
+
+            return lines;
         }
 
         public void ViewSkin(bool isButtonPressed, object[] parameters)
@@ -38,7 +35,7 @@ namespace GorillaCustomSkin.Models
             if (parameters.ElementAtOrDefault(0) is ISkinAsset skin)
             {
                 CustomSkinItemScreen.Skin = skin;
-                ShowScreen(typeof(CustomSkinItemScreen));
+                SetScreen<CustomSkinItemScreen>();
             }
         }
     }
