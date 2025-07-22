@@ -1,5 +1,4 @@
 ﻿using BepInEx;
-using BepInEx.Configuration;
 using BepInEx.Logging;
 using GorillaCustomSkin.Behaviours;
 using GorillaCustomSkin.Behaviours.Networking;
@@ -8,21 +7,18 @@ using UnityEngine;
 
 namespace GorillaCustomSkin
 {
-    [BepInDependency("dev.gorillainfowatch")]
     [BepInPlugin(Constants.GUID, Constants.Name, Constants.Version)]
+    [BepInDependency("dev.gorillainfowatch")]
     public class Plugin : BaseUnityPlugin
     {
-        public static ManualLogSource MainLogSource;
-
-        public static ConfigFile MainConfig;
+        public static new ManualLogSource Logger;
 
         public void Awake()
         {
-            MainLogSource = Logger;
-            MainConfig = Config;
+            Logger = base.Logger;
 
             Harmony.CreateAndPatchAll(GetType().Assembly, Constants.GUID);
-            GorillaTagger.OnPlayerSpawned(() => new GameObject(Constants.Name, typeof(Main), typeof(NetworkHandler)));
+            GorillaTagger.OnPlayerSpawned(() => new GameObject(Constants.Name, typeof(DataManager), typeof(NetworkManager), typeof(CustomSkinManager)));
         }
     }
 }

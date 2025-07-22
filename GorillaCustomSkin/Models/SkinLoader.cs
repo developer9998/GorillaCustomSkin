@@ -1,8 +1,9 @@
-﻿using System;
+﻿using BepInEx;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using GorillaCustomSkin.Tools;
+using System.Threading.Tasks;
 
 namespace GorillaCustomSkin.Models
 {
@@ -38,7 +39,14 @@ namespace GorillaCustomSkin.Models
 
             materials.AddRange(LoadSkins<ModdedSkin>(modded_material_files));
 
-            onSkinsLoadedRootCallback?.Invoke();
+            Task.Run(async delegate ()
+            {
+                await Task.Delay(5000);
+                ThreadingHelper.Instance.StartSyncInvoke(delegate ()
+                {
+                    onSkinsLoadedRootCallback?.Invoke();
+                });
+            });
 
             return materials;
         }
@@ -58,8 +66,8 @@ namespace GorillaCustomSkin.Models
                 }
                 catch (Exception ex)
                 {
-                    Logging.Fatal($"Error constructing skin: {file}");
-                    Logging.Error(ex);
+                    Plugin.Logger.LogFatal($"Error constructing skin: {file}");
+                    Plugin.Logger.LogError(ex);
                     File.Move(file, string.Concat(file, ".broken"));
                 }
             }

@@ -1,36 +1,37 @@
-﻿using System.IO;
-using System.Linq;
+﻿using System.Linq;
 using GorillaCustomSkin.Behaviours;
 using GorillaInfoWatch.Attributes;
 using GorillaInfoWatch.Models;
+using GorillaInfoWatch.Models.Widgets;
 
-[assembly: WatchCompatibleMod]
+[assembly: InfoWatchCompatible]
 
 namespace GorillaCustomSkin.Models
 {
-    [WatchCustomPage, DisplayAtHomeScreen]
-    internal class CustomSkinSelectionScreen : WatchScreen
+    [ShowOnHomeScreen]
+    internal class CustomSkinSelectionScreen : InfoWatchScreen
     {
         public override string Title => Constants.Name;
 
-        public override string Description => !Main.Instance.IsLoaded ? "GorillaCustomSkin is actively loading, please wait, then refresh" : $"{Main.Instance.Loader.Skins.Count} skins loaded by GorillaCustomSkin";
+        public override string Description => !CustomSkinManager.Instance.IsLoaded ? "GorillaCustomSkin is actively loading, please wait, then refresh" : $"{CustomSkinManager.Instance.Loader.Skins.Count} skins loaded by GorillaCustomSkin";
 
         public override ScreenContent GetContent()
         {
+            
             LineBuilder lines = new();
 
-            if (Main.Instance.IsLoaded)
+            if (CustomSkinManager.Instance.IsLoaded)
             {
-                foreach (var skin in Main.Instance.Loader.Skins)
+                foreach (var skin in CustomSkinManager.Instance.Loader.Skins)
                 {
-                    lines.AddLine(Path.GetFileName(skin.FilePath), new WidgetButton(ViewSkin, skin));
+                    lines.Add(skin.Descriptor.Name, new Widget_PushButton(ViewSkin, skin));
                 }
             }
 
             return lines;
         }
 
-        public void ViewSkin(bool isButtonPressed, object[] parameters)
+        public void ViewSkin(object[] parameters)
         {
             if (parameters.ElementAtOrDefault(0) is ISkinAsset skin)
             {

@@ -1,6 +1,5 @@
 ﻿using System;
 using GorillaCustomSkin.Behaviours;
-using GorillaCustomSkin.Tools;
 using UnityEngine;
 
 namespace GorillaCustomSkin.Models
@@ -16,7 +15,7 @@ namespace GorillaCustomSkin.Models
         {
             try
             {
-                Logging.Info($"Loading ModdedSkin: {path}");
+                Plugin.Logger.LogInfo($"Loading ModdedSkin: {path}");
 
                 FilePath = path;
 
@@ -26,7 +25,7 @@ namespace GorillaCustomSkin.Models
 
                 if (template.TryGetComponent(out SkinDescriptor descriptor))
                 {
-                    Logging.Info("Got descriptor component");
+                    Plugin.Logger.LogMessage("Got descriptor component");
 
                     Descriptor = descriptor;
 
@@ -35,7 +34,7 @@ namespace GorillaCustomSkin.Models
                     Skin = ScriptableObject.CreateInstance<GorillaSkin>();
                     Skin._bodyMesh = defaultSkin._bodyMesh;
 
-                    Logging.Info("Created GorillaSkin");
+                    Plugin.Logger.LogMessage("Created GorillaSkin");
 
                     GorillaSkinMaterials skinMaterials = 0;
 
@@ -69,6 +68,9 @@ namespace GorillaCustomSkin.Models
                         Skin._scoreboardMaterial = defaultSkin._scoreboardMaterial;
                     }
 
+                    // TODO: re-implement face material
+
+                    /*
                     if (Descriptor.FaceMaterial)
                     {
                         skinMaterials |= GorillaSkinMaterials.Face;
@@ -78,8 +80,9 @@ namespace GorillaCustomSkin.Models
                     {
                         Skin._faceMaterial = defaultSkin._faceMaterial;
                     }
+                    */
 
-                    Logging.Info("Assigned skin materials");
+                    Plugin.Logger.LogMessage("Assigned skin materials");
 
                     if (Descriptor.CustomColours)
                     {
@@ -89,14 +92,14 @@ namespace GorillaCustomSkin.Models
                         };
                         ColouringRule = colouringRule;
 
-                        Logging.Info("Defined colouring rule (custom colours)");
+                        Plugin.Logger.LogMessage("Defined colouring rule (custom colours)");
                     }
                 }
             }
             catch (Exception ex)
             {
-                Logging.Fatal($"Error loading skin: {path}");
-                Logging.Error(ex);
+                Plugin.Logger.LogFatal($"Error loading skin: {path}");
+                Plugin.Logger.LogError(ex);
             }
         }
     }

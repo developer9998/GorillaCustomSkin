@@ -1,31 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using GorillaCustomSkin.Models;
-using GorillaCustomSkin.Tools;
+using GorillaInfoWatch.Extensions;
 using GorillaTag;
 using UnityEngine;
 
 namespace GorillaCustomSkin.Behaviours
 {
-    [RequireComponent(typeof(VRRig))]
+    [RequireComponent(typeof(VRRig)), DisallowMultipleComponent]
     public class SkinRig : MonoBehaviour
     {
-        public VRRig ControllingRig;
-
-        // custom skin
+        public VRRig Rig;
 
         public event Action<ISkinAsset> OnSkinLoaded;
         public event Action OnSkinUnloaded;
 
         public bool CustomSkinLoaded = false;
-
         public ISkinAsset CustomSkin;
 
-        public Dictionary<ISkinAsset, GorillaSkinToggle> SkinToggle = [];
+        public Dictionary<ISkinAsset, GorillaSkinToggle> SkinToggleCache = [];
 
-        public void Start()
+        public void Awake()
         {
-            ControllingRig ??= GetComponentInParent<VRRig>();
+            Rig = GetComponent<VRRig>();
         }
 
         public void LoadSkin(ISkinAsset skin)
@@ -35,26 +32,24 @@ namespace GorillaCustomSkin.Behaviours
                 UnloadSkin();
             }
 
-            Logging.Info($"LoadSkin {skin.Descriptor.Name} for {ControllingRig.Creator.NickName}");
+            Plugin.Logger.LogInfo($"LoadSkin {skin.Descriptor.Name} for {((!Rig.isLocal && Rig.Creator is NetPlayer player) ? player.GetNameRef().SanitizeName() : "Local Player")}");
 
             CustomSkinLoaded = true;
             CustomSkin = skin;
 
-            if (!SkinToggle.TryGetValue(CustomSkin, out var toggle))
+            if (!SkinToggleCache.TryGetValue(CustomSkin, out var toggle))
             {
-                GameObject toggleObject = new($"{skin.Descriptor.Name} GorillaSkinToggle");
+                GameObject toggleObject = new($"GorillaSkinToggle: {skin.Descriptor.Name}");
                 toggleObject.SetActive(false);
-                toggleObject.transform.SetParent(ControllingRig.transform, false);
+                toggleObject.transform.SetParent(Rig.transform, false);
 
                 toggle = toggleObject.AddComponent<GorillaSkinToggle>();
-                if (skin.ColouringRule.colorMaterials != 0)
-                    toggle.coloringRules = [skin.ColouringRule];
-                else
-                    toggle.coloringRules = [];
+                if (skin.ColouringRule.colorMaterials > 0) toggle.coloringRules = [skin.ColouringRule];
+                else toggle.coloringRules = [];
                 toggle._skin = skin.Skin;
-                (toggle as ISpawnable).OnSpawn(ControllingRig);
-                toggle._rig = ControllingRig;
-                SkinToggle.Add(skin, toggle);
+                (toggle as ISpawnable).OnSpawn(Rig);
+                toggle._rig = Rig;
+                SkinToggleCache.Add(skin, toggle);
             }
 
             toggle.gameObject.SetActive(true);
@@ -67,11 +62,11 @@ namespace GorillaCustomSkin.Behaviours
             if (!CustomSkinLoaded)
                 return;
 
-            Logging.Info($"UnloadSkin {CustomSkin.Descriptor.Name} for {ControllingRig.Creator.NickName}");
+            Plugin.Logger.LogInfo($"UnloadSkin {CustomSkin.Descriptor.Name} for {((!Rig.isLocal && Rig.Creator is NetPlayer player) ? player.GetNameRef().SanitizeName() : "Local Player")}");
 
             CustomSkinLoaded = false;
 
-            if (SkinToggle.TryGetValue(CustomSkin, out var toggle))
+            if (SkinToggleCache.TryGetValue(CustomSkin, out var toggle))
             {
                 toggle.gameObject.SetActive(false);
             }

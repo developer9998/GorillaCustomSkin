@@ -1,16 +1,15 @@
 ﻿using BepInEx;
 using GorillaCustomSkin.Behaviours;
-using GorillaInfoWatch.Attributes;
 using GorillaInfoWatch.Models;
+using GorillaInfoWatch.Models.Widgets;
 
 namespace GorillaCustomSkin.Models
 {
-    [WatchCustomPage]
-    internal class CustomSkinItemScreen : WatchScreen
+    internal class CustomSkinItemScreen : InfoWatchScreen
     {
         public override string Title => Constants.Name;
 
-        public override string Description => Skin is null ? string.Empty : Skin.FilePath.Replace(Paths.PluginPath, string.Empty);
+        public override string Description => Skin is null ? string.Empty : Skin.FilePath.Replace(Paths.PluginPath, string.Empty).TrimStart('/').TrimStart('\\');
 
         internal static ISkinAsset Skin;
 
@@ -24,26 +23,27 @@ namespace GorillaCustomSkin.Models
                 return lines;
             }
 
-            lines.AddLine($"Name: {Skin.Descriptor.Name}");
+            lines.Append("Name: ").Append(Skin.Descriptor.Name).AppendLine();
 
-            lines.AddLine($"Author: {Skin.Descriptor.Author}");
+            lines.Append("Author: ").Append(Skin.Descriptor.Author).AppendLine();
 
-            lines.AddLine($"Description: {(string.IsNullOrEmpty(Skin.Descriptor.Description) || string.IsNullOrWhiteSpace(Skin.Descriptor.Description) ? "<color=red>N/A</color>" : Skin.Descriptor.Description)}");
+            string description = Skin.Descriptor.Description;
+            if (!string.IsNullOrEmpty(description) && !string.IsNullOrWhiteSpace(description)) lines.Append("Description: ").Append(description).AppendLine();
 
-            lines.AddLine($"{(Main.Instance.LocalRig.CustomSkin == Skin ? "Remove" : "Equip")} Skin:", new WidgetButton(WidgetButton.EButtonType.Switch, Main.Instance.LocalRig.CustomSkin == Skin, EquipSkin));
+            lines.Append(CustomSkinManager.Instance.LocalRig.CustomSkin == Skin ? "Remove" : "Equip").Append(" Skin:").Add(new Widget_Switch(CustomSkinManager.Instance.LocalRig.CustomSkin == Skin, EquipSkin));
 
             return lines;
         }
 
         public void EquipSkin(bool isButtonPressed, object[] args)
         {
-            if (Main.Instance.LocalRig.CustomSkin != Skin)
+            if (CustomSkinManager.Instance.LocalRig.CustomSkin != Skin)
             {
-                Main.Instance.LocalRig.LoadSkin(Skin);
+                CustomSkinManager.Instance.LocalRig.LoadSkin(Skin);
             }
             else
             {
-                Main.Instance.LocalRig.UnloadSkin();
+                CustomSkinManager.Instance.LocalRig.UnloadSkin();
             }
 
             SetText();
