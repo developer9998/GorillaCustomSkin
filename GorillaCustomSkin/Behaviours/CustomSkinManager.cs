@@ -1,7 +1,7 @@
-﻿using System;
-using System.IO;
-using GorillaCustomSkin.Behaviours.Networking;
+﻿using GorillaCustomSkin.Behaviours.Networking;
 using GorillaCustomSkin.Models;
+using System;
+using System.IO;
 using Loader = GorillaCustomSkin.Models.SkinLoader;
 using Rig = GorillaCustomSkin.Behaviours.SkinRig;
 
@@ -56,7 +56,7 @@ namespace GorillaCustomSkin.Behaviours
                 string networkString = string.Concat(skin.Descriptor.Name, skin.Descriptor.Author);
                 NetworkManager.Instance.SetProperty("CustomSkin", new string(Array.FindAll(networkString.ToCharArray(), Utils.IsASCIILetterOrDigit)));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Plugin.Logger.LogFatal("Could not supply NetworkManager with custom skin");
                 Plugin.Logger.LogError(ex);

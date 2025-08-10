@@ -1,23 +1,23 @@
-﻿using System.Linq;
-using GorillaCustomSkin.Behaviours;
-using GorillaInfoWatch.Attributes;
+﻿using GorillaCustomSkin.Behaviours;
 using GorillaInfoWatch.Models;
+using GorillaInfoWatch.Models.Attributes;
 using GorillaInfoWatch.Models.Widgets;
+using System.Linq;
 
 [assembly: InfoWatchCompatible]
 
 namespace GorillaCustomSkin.Models
 {
     [ShowOnHomeScreen]
-    internal class CustomSkinSelectionScreen : InfoWatchScreen
+    internal class CustomSkinSelectionScreen : Screen
     {
         public override string Title => Constants.Name;
 
         public override string Description => !CustomSkinManager.Instance.IsLoaded ? "GorillaCustomSkin is actively loading, please wait, then refresh" : $"{CustomSkinManager.Instance.Loader.Skins.Count} skins loaded by GorillaCustomSkin";
 
-        public override ScreenContent GetContent()
+        public override ScreenLines GetContent()
         {
-            
+
             LineBuilder lines = new();
 
             if (CustomSkinManager.Instance.IsLoaded)

@@ -1,5 +1,5 @@
-﻿using System;
-using GorillaCustomSkin.Behaviours;
+﻿using GorillaCustomSkin.Behaviours;
+using System;
 using UnityEngine;
 
 namespace GorillaCustomSkin.Models

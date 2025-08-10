@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using GorillaCustomSkin.Models;
+﻿using GorillaCustomSkin.Models;
 using GorillaInfoWatch.Extensions;
 using GorillaTag;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace GorillaCustomSkin.Behaviours

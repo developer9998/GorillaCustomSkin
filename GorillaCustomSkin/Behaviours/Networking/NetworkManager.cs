@@ -66,7 +66,7 @@ namespace GorillaCustomSkin.Behaviours.Networking
                 Plugin.Logger.LogMessage($"Recieved properties from {netPlayer.GetNameRef().SanitizeName()}");
                 Plugin.Logger.LogInfo(string.Join(Environment.NewLine, properties.Select(prop => $"[{prop.Key}, {prop.Value}]")));
 
-                if (!netPlayer.IsLocal) return;
+                if (netPlayer.IsLocal) return;
 
                 if (!networkedPlayer.HasCustomSkin)
                 {

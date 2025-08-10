@@ -5,7 +5,7 @@ using GorillaInfoWatch.Models.Widgets;
 
 namespace GorillaCustomSkin.Models
 {
-    internal class CustomSkinItemScreen : InfoWatchScreen
+    internal class CustomSkinItemScreen : Screen
     {
         public override string Title => Constants.Name;
 
@@ -13,7 +13,7 @@ namespace GorillaCustomSkin.Models
 
         internal static ISkinAsset Skin;
 
-        public override ScreenContent GetContent()
+        public override ScreenLines GetContent()
         {
             LineBuilder lines = new();
 
